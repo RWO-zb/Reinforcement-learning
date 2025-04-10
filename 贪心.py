@@ -2,14 +2,21 @@ import numpy as np
 import random
 probs=np.random.uniform(size=10)
 rewards=[[1]for _ in range(10) ]
-def chose_one():#选择一个老虎机
+def chose_one1():#选择一个老虎机
     if random.random()<0.01:
         return random.randint(0,9)
     rewards_mean=[np.mean(i)for i in rewards]
     return np.argmax(rewards_mean)
 
+def chose_one2():#按游玩次数让探索率逐渐下降
+    play_count=sum([len(i)for i in rewards])
+    if random.random()<1/play_count:
+        return random.randint(0,9)
+    rewards_mean=[np.mean(i)for i in rewards]
+    return np.argmax(rewards_mean)
+
 def try_play():#进行试玩
-    i=chose_one()
+    i=chose_one2()
     reward=0
     if random.random()<probs[i]:#进行游玩
         reward=1
