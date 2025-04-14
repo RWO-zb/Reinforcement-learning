@@ -47,13 +47,13 @@ def get_value(rs):#统计奖励
         sum+=0.9**i*r
     return sum
 
-def monte_carlo(ss,rs):
+def monte_carlo(ss,rs):#蒙特卡洛方法估计价值
     values=[[]for _ in range(5)]
     for s,r in zip(ss,rs):
         values[s[0]].append(get_value(r))#计算第一步的价值
     return [np.mean(i)for i in values]#求平均估计出每一步的价值
 
-def optimize(ss, rs, values, learning_rate=0.01):
+def optimize(ss, rs, values, learning_rate):#迭代概率方程
     counts = np.zeros((5, 5)) # 初始化计数矩阵和新的转移矩阵
     new_P = np.zeros((5, 5))
     for es in ss: # 统计状态转移次数
@@ -77,11 +77,12 @@ def optimize(ss, rs, values, learning_rate=0.01):
 
 new_ss, new_rs = get_chains(5000, 100)
 new_values = monte_carlo(new_ss, new_rs)
-test_time=10
+learning_rate=0.01
+test_time=30
 
 for iteration in range(test_time):# 可以多次迭代这个过程
     print(f"\n迭代 {iteration+1}:")
-    optimized_P = optimize(new_ss, new_rs, new_values)
+    optimized_P = optimize(new_ss, new_rs, new_values,learning_rate)
     P = optimized_P
     
     new_ss, new_rs = get_chains(5000, 100)
