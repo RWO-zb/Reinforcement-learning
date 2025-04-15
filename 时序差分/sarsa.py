@@ -37,7 +37,7 @@ def get_action(row,col):#获得下一个动作
     return  Q[row,col].argmax()
 
 def get_update(row, col, action, reward, next_row, next_col, next_action):#获得差分
-    target=0.9* Q[next_row][next_col][next_action]
+    target=0.9* Q[next_row][next_col][next_action]#将下一步作为差分
     target+=reward
     value=Q[row][col][action]
     update=target-value#用期望奖励和下一个状态的奖励差来估计差分
