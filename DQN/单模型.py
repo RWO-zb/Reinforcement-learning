@@ -3,14 +3,14 @@ from matplotlib import pyplot as plt
 import torch
 import random
 from IPython import display
-class MyWrapper(gym.Wrapper):
+class MyWrapper(gym.Wrapper):#继承Wrapper
     def __init__(self):
         env=gym.make('CartPole-v1',render_mode='rgb_array')
-        super().__init__(env)
-        self.env=env
-        self.step_n=0
+        super().__init__(env)#调用父类初始化
+        self.env=env#保存环境引用
+        self.step_n=0#初始化计数器
 
-    def reset(self):
+    def reset(self):#重置环境
         state,_=self.env.reset()
         self.step_n=0
         return state
@@ -132,4 +132,4 @@ def train():
             test_result = sum([test(play=False) for _ in range(20)]) / 20
             print(epoch, len(data), update_count, drop_count, test_result)
 train()
-test(play=True)
+print(test(play=False))
