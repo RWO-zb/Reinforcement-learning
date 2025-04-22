@@ -74,12 +74,12 @@ def get_sample():#获取一批数据样本
 
 state, action, reward, next_state, over = get_sample()
 
-def get_value(state, action):
+def get_value(state, action):#获得价值
     value = model(state)
     value = value.gather(dim=1, index=action)
     return value
 
-def get_target(reward, next_state, over):
+def get_target(reward, next_state, over):#获得Q值
     with torch.no_grad():
         target = next_model(next_state)
     target = target.max(dim=1)[0]
@@ -89,7 +89,7 @@ def get_target(reward, next_state, over):
     target += reward
     return target
 
-def test(play):
+def test(play):#试玩
     state = env.reset()
     reward_sum = 0
     over = False
@@ -99,7 +99,7 @@ def test(play):
         reward_sum += reward
     return reward_sum
 
-def train():
+def train():#训练
     model.train()
     optimizer = torch.optim.Adam(model.parameters(), lr=2e-3)
     loss_fn = torch.nn.MSELoss()
@@ -109,7 +109,7 @@ def train():
             state, action, reward, next_state, over = get_sample()
             value = get_value(state, action)
             target = get_target(reward, next_state, over)
-            loss = loss_fn(value, target)
+            loss = loss_fn(value, target)#用损失函数拟合逼近
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
