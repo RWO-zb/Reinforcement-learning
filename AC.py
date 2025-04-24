@@ -91,7 +91,7 @@ def train():
     for i in range(1000):
         states,rewards,actions,next_states,overs=get_data()
         values=model_td(states)#计算价值
-        targets=model_td(next_states)#计算Q值
+        targets=model_td(next_states)*0.98#计算Q值
         targets*=(1-overs)
         targets+=rewards
         delta=(targets-values).detach()
